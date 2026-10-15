@@ -2,7 +2,7 @@
 # Segredos (sync: false) são pedidos pelo Render ao criar o serviço e nunca ficam no repositório.
 services:
   - type: web
-    name: onecore-tap-api
+    name: onecore-tap
     runtime: docker
     rootDir: backend
     dockerfilePath: ./Dockerfile

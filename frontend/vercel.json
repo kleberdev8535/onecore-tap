@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://onecore-tap-api.onrender.com/api/:path*" },
+    { "source": "/api/:path*", "destination": "https://onecore-tap.onrender.com/api/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
