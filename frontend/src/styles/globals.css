@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+
+/*
+ * OneCore Tap - Design tokens
+ * Paleta derivada da plaquinha fisica: acrilico preto, verde OneCore, branco.
+ * Componentes usam somente tokens semanticos (bg-surface, text-muted...), nunca hex direto.
+ */
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Marca */
+  --color-ink: #0b0f0e;
+  --color-ink-800: #141a18;
+  --color-ink-700: #1d2522;
+  --color-ink-600: #2a3430;
+  --color-brand: #16a36b;
+  --color-brand-600: #12895a;
+  --color-brand-700: #0d694a;
+  --color-brand-50: #e5f5ec;
+  --color-brand-100: #ccebd9;
+
+  /* Superficies e texto (tema claro, padrao) */
+  --color-canvas: #f7f9f8;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f2f5f4;
+  --color-line: #e5e9e7;
+  --color-line-strong: #d3d9d6;
+  --color-fg: #0b0f0e;
+  --color-fg-secondary: #344054;
+  /* #667085 sobre branco = 4.83:1 (AA para texto normal) */
+  --color-muted: #667085;
+
+  /* Semanticos */
+  --color-success: #12895a;
+  --color-success-soft: #e5f5ec;
+  --color-danger: #c4320a;
+  --color-danger-soft: #fef0eb;
+  --color-warning: #b54708;
+  --color-warning-soft: #fef6e7;
+  --color-info: #175cd3;
+  --color-info-soft: #eef4ff;
+
+  /* Raios (DESIGN-SYSTEM: 8 / 12 / 16 / 24) */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+
+  /* Sombras suaves */
+  --shadow-xs: 0 1px 2px rgb(16 24 40 / 0.05);
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.04), 0 1px 3px rgb(16 24 40 / 0.06);
+  --shadow-pop: 0 12px 32px -8px rgb(16 24 40 / 0.18), 0 4px 8px -4px rgb(16 24 40 / 0.06);
+  --shadow-focus: 0 0 0 4px rgb(22 163 107 / 0.18);
+
+  /* Motion (DESIGN-SYSTEM: 150 / 250 / 400 ms) */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+  @keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-canvas text-fg font-sans;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-brand-100);
+    color: var(--color-ink);
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-surface-muted) 0%, #e9eeec 50%, var(--color-surface-muted) 100%);
+    background-size: 800px 100%;
+    animation: var(--animate-shimmer);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

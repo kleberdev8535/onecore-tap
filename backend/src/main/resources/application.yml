@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: onecore-tap
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/onecore_tap}
+    username: ${DB_USERNAME:onecore}
+    password: ${DB_PASSWORD:onecore}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+  error:
+    include-stacktrace: never
+  servlet:
+    session:
+      timeout: ${SESSION_TIMEOUT:12h}
+      cookie:
+        name: OCTAP_SESSION
+        http-only: true
+        secure: ${SESSION_COOKIE_SECURE:false}
+        same-site: lax
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  api-docs:
+    enabled: ${API_DOCS_ENABLED:true}
+  swagger-ui:
+    enabled: ${API_DOCS_ENABLED:true}
+
+onecore:
+  app-url: ${APP_URL:http://localhost:5173}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  security:
+    max-failed-logins: 5
+    lockout-duration: 15m
+    ip-login-limit: 30
+    ip-login-window: 15m
+    password-reset-ttl: 30m
+  plates:
+    public-base-url: ${PLATE_PUBLIC_BASE_URL:https://tap.onecorebusiness.com.br/t/}
+    public-lookup-limit-per-minute: 60
+  orders:
+    orders-per-ip: 10
+    orders-per-plate: 40
+    requests-per-ip: 10
+  mail:
+    log-content: ${MAIL_LOG_CONTENT:false}
+  bootstrap:
+    super-admin:
+      email: ${SUPERADMIN_EMAIL:}
+      password: ${SUPERADMIN_PASSWORD:}
+      name: ${SUPERADMIN_NAME:OneCore Business}
+
+logging:
+  level:
+    com.onecore.tap: INFO

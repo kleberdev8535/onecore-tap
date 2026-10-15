@@ -1,0 +1,41 @@
+# Ambiente local com Docker.
+#   docker compose up -d db          -> somente o PostgreSQL (rode backend e frontend fora do Docker)
+#   docker compose --profile app up  -> PostgreSQL + backend
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: onecore_tap
+      POSTGRES_USER: ${DB_USERNAME:-onecore}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-onecore}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-onecore} -d onecore_tap"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    profiles: ["app"]
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/onecore_tap
+      DB_USERNAME: ${DB_USERNAME:-onecore}
+      DB_PASSWORD: ${DB_PASSWORD:-onecore}
+      SUPERADMIN_EMAIL: ${SUPERADMIN_EMAIL:-}
+      SUPERADMIN_PASSWORD: ${SUPERADMIN_PASSWORD:-}
+      APP_URL: ${APP_URL:-http://localhost:5173}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
+      MAIL_LOG_CONTENT: ${MAIL_LOG_CONTENT:-false}
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
